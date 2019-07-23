@@ -20,6 +20,8 @@ class DBProvider {
     return _database;
   }
 
+
+  //初始化db
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "TestDB.db");
@@ -34,6 +36,8 @@ class DBProvider {
     });
   }
 
+
+  //插入数据
   newClient(Client newClient) async {
     final db = await database;
     //get the biggest id in the table
@@ -47,6 +51,9 @@ class DBProvider {
     return raw;
   }
 
+
+
+  //根据id设置指定属性
   blockOrUnblock(Client client) async {
     final db = await database;
     Client blocked = Client(
@@ -59,6 +66,8 @@ class DBProvider {
     return res;
   }
 
+
+  //更新client
   updateClient(Client newClient) async {
     final db = await database;
     var res = await db.update("Client", newClient.toMap(),
@@ -66,12 +75,17 @@ class DBProvider {
     return res;
   }
 
+
+  //根据id获取信息
   getClient(int id) async {
     final db = await database;
     var res = await db.query("Client", where: "id = ?", whereArgs: [id]);
     return res.isNotEmpty ? Client.fromMap(res.first) : null;
   }
 
+
+
+  //查询语句返回列表
   Future<List<Client>> getBlockedClients() async {
     final db = await database;
 
@@ -84,6 +98,9 @@ class DBProvider {
     return list;
   }
 
+
+
+  //查询所有的数据
   Future<List<Client>> getAllClients() async {
     final db = await database;
     var res = await db.query("Client");
@@ -92,11 +109,16 @@ class DBProvider {
     return list;
   }
 
+
+
+  //根据id删除数据
   deleteClient(int id) async {
     final db = await database;
     return db.delete("Client", where: "id = ?", whereArgs: [id]);
   }
 
+
+  //删除全部数据
   deleteAll() async {
     final db = await database;
     db.rawDelete("Delete * from Client");

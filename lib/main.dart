@@ -25,6 +25,9 @@ class _MyAppState extends State<MyApp> {
       body: FutureBuilder<List<Client>>(
         future: DBProvider.db.getAllClients(),
         builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot) {
+          if(snapshot.connectionState==ConnectionState.active){
+
+          }
           if (snapshot.hasData) {
             return ListView.builder(
               itemCount: snapshot.data.length,
@@ -60,7 +63,7 @@ class _MyAppState extends State<MyApp> {
         onPressed: () async {
           Client rnd = testClients[math.Random().nextInt(testClients.length)];
           await DBProvider.db.newClient(rnd);
-          setState(() {});
+          setState(() { });
         },
       ),
     );
